@@ -31,4 +31,9 @@ public class EmployeeController {
     public Mono<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto){
         return employeeService.saveEmployee(employeeDto);
     }
+
+    @PutMapping("/{id}")
+    public Mono<EmployeeDto> updateEmployee(@PathVariable String id, @RequestBody EmployeeDto employeeDto) {
+        return employeeService.updateEmployee(id, employeeDto);
+    }
 }

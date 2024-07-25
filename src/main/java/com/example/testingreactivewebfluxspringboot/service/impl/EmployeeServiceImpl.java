@@ -37,4 +37,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return savedEmployee.map((employeeEntity) -> EmployeeMapper.mapToEmployeeDto(employeeEntity));
     }
 
+    @Override
+    public Mono<EmployeeDto> updateEmployee(String id, EmployeeDto employeeDto){
+
+        Mono<Employee> employeeDB = employeeRepository.findById(id);
+
+        Mono<Employee> updatedEmployee = employeeDB.flatMap((employee) -> {employee.setId(id);
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setEmail(employeeDto.getEmail());
+        return employeeRepository.save(employee);
+        });
+
+        return updatedEmployee.map((emp) -> EmployeeMapper.mapToEmployeeDto(emp));
+    }
+
+
+
 }
