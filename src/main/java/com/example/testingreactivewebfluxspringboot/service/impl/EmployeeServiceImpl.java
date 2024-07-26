@@ -14,44 +14,49 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+  private final EmployeeRepository employeeRepository;
 
-    @Override
-    public Mono<EmployeeDto> getEmployeeById(String id){
-        Mono<Employee> savedEmployee = employeeRepository.findById(id);
-        return savedEmployee.map((employee) -> EmployeeMapper.mapToEmployeeDto(employee));
-    }
+  @Override
+  public Mono<EmployeeDto> getEmployeeById(String id) {
+    Mono<Employee> savedEmployee = employeeRepository.findById(id);
+    return savedEmployee.map((employee) -> EmployeeMapper.mapToEmployeeDto(employee));
+  }
 
-    @Override
-    public Flux<EmployeeDto> getAllEmployees(){
-        Flux<Employee> employees = employeeRepository.findAll();
-        return employees.map((employee) -> EmployeeMapper.mapToEmployeeDto(employee));
-    }
+  @Override
+  public Flux<EmployeeDto> getAllEmployees() {
+    Flux<Employee> employees = employeeRepository.findAll();
+    return employees.map((employee) -> EmployeeMapper.mapToEmployeeDto(employee));
+  }
 
-    @Override
-    public Mono<EmployeeDto> saveEmployee(EmployeeDto employeeDto){
+  @Override
+  public Mono<EmployeeDto> saveEmployee(EmployeeDto employeeDto) {
 
-        Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
-        Mono<Employee> savedEmployee = employeeRepository.save(employee);
+    Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
+    Mono<Employee> savedEmployee = employeeRepository.save(employee);
 
-        return savedEmployee.map((employeeEntity) -> EmployeeMapper.mapToEmployeeDto(employeeEntity));
-    }
+    return savedEmployee.map((employeeEntity) -> EmployeeMapper.mapToEmployeeDto(employeeEntity));
+  }
 
-    @Override
-    public Mono<EmployeeDto> updateEmployee(String id, EmployeeDto employeeDto){
+  @Override
+  public Mono<EmployeeDto> updateEmployee(String id, EmployeeDto employeeDto) {
 
-        Mono<Employee> employeeDB = employeeRepository.findById(id);
+    Mono<Employee> employeeDB = employeeRepository.findById(id);
 
-        Mono<Employee> updatedEmployee = employeeDB.flatMap((employee) -> {employee.setId(id);
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setEmail(employeeDto.getEmail());
-        return employeeRepository.save(employee);
-        });
+    Mono<Employee> updatedEmployee = employeeDB.flatMap((employee) -> {
+      employee.setId(id);
+      employee.setFirstName(employeeDto.getFirstName());
+      employee.setLastName(employeeDto.getLastName());
+      employee.setEmail(employeeDto.getEmail());
+      return employeeRepository.save(employee);
+    });
 
-        return updatedEmployee.map((emp) -> EmployeeMapper.mapToEmployeeDto(emp));
-    }
+    return updatedEmployee.map((emp) -> EmployeeMapper.mapToEmployeeDto(emp));
+  }
 
+  @Override
+  public Mono<Void> deleteEmployee(String id) {
+    return employeeRepository.deleteById(id);
+  }
 
 
 }
