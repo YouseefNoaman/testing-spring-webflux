@@ -41,8 +41,8 @@ public class EmployeeControllerTests {
   @BeforeEach
   public void setup() {
     employeeDto = new EmployeeDto();
-    employeeDto.setFirstName("John");
-    employeeDto.setLastName("Doe");
+    employeeDto.setFirstname("John");
+    employeeDto.setLastname("Doe");
     employeeDto.setEmail("sfjh@gmail.com");
 
   }
@@ -65,8 +65,8 @@ public class EmployeeControllerTests {
 
     response.expectStatus().isCreated().expectBody()
         .consumeWith(System.out::println)
-        .jsonPath("$.firstName").isEqualTo(employeeDto.getFirstName())
-        .jsonPath("$.lastName").isEqualTo(employeeDto.getLastName())
+        .jsonPath("$.firstName").isEqualTo(employeeDto.getFirstname())
+        .jsonPath("$.lastName").isEqualTo(employeeDto.getLastname())
         .jsonPath("$.email").isEqualTo(employeeDto.getEmail());
 
   }
@@ -94,8 +94,8 @@ public class EmployeeControllerTests {
     // given - precondition or setup
 
     EmployeeDto employeeDto2 = new EmployeeDto();
-    employeeDto2.setFirstName("fred");
-    employeeDto2.setLastName("hans");
+    employeeDto2.setFirstname("fred");
+    employeeDto2.setLastname("hans");
     employeeDto2.setEmail("fredH@gmail.com");
 
     Flux<EmployeeDto> employeeDtoFlux = Flux.fromIterable(List.of(employeeDto, employeeDto2));
@@ -119,8 +119,8 @@ public class EmployeeControllerTests {
     // given - precondition or setup
 
     EmployeeDto employeeDto2 = new EmployeeDto();
-    employeeDto2.setFirstName("fred");
-    employeeDto2.setLastName("hans");
+    employeeDto2.setFirstname("fred");
+    employeeDto2.setLastname("hans");
     employeeDto2.setEmail("fredH@gmail.com");
 
     // Mock the service call
@@ -190,8 +190,8 @@ public class EmployeeControllerTests {
   @Test
   public void givenEmployeeObjAndId_whenUpdateEmployeeBy_ThenReturnEmployeeObj() {
     EmployeeDto employeeDto2 = new EmployeeDto();
-    employeeDto2.setFirstName("fred");
-    employeeDto2.setLastName("hans");
+    employeeDto2.setFirstname("fred");
+    employeeDto2.setLastname("hans");
     employeeDto2.setEmail("fredH@gmail.com");
 
     // Mock the service call
