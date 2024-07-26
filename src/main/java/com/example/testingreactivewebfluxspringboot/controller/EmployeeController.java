@@ -4,7 +4,16 @@ import com.example.testingreactivewebfluxspringboot.dto.EmployeeDto;
 import com.example.testingreactivewebfluxspringboot.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,8 +30,17 @@ public class EmployeeController {
   }
 
   @GetMapping("/{id}")
-  public Mono<EmployeeDto> getEmployeeById(@PathVariable String id) {
-    return employeeService.getEmployeeById(id);
+  public Mono<ResponseEntity<EmployeeDto>> getEmployeeById(@PathVariable String id) {
+
+    return employeeService.getEmployeeById(id).flatMap(employeeDto -> {
+      // Handle the case where the employee is present
+      // Perform your logic here
+      return Mono.just(ResponseEntity.ok(employeeDto));
+    }).switchIfEmpty(Mono.defer(() -> {
+      // Handle the case where the employee is not found
+      // Perform alternative logic here
+      return Mono.just(ResponseEntity.notFound().build());
+    }));
   }
 
   @PostMapping
