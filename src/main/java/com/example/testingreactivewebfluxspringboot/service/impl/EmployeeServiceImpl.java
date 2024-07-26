@@ -44,8 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     Mono<Employee> updatedEmployee = employeeDB.flatMap((employee) -> {
       employee.setId(id);
-      employee.setFirstName(employeeDto.getFirstName());
-      employee.setLastName(employeeDto.getLastName());
+      employee.setFirstName(employeeDto.getFirstname());
+      employee.setLastName(employeeDto.getLastname());
       employee.setEmail(employeeDto.getEmail());
       return employeeRepository.save(employee);
     });
@@ -56,6 +56,11 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   public Mono<Void> deleteEmployee(String id) {
     return employeeRepository.deleteById(id);
+  }
+
+  @Override
+  public Mono<Void> deleteAll() {
+    return employeeRepository.deleteAll();
   }
 
 
